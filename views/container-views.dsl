@@ -5,7 +5,7 @@ container bookstore_system "BookstoreSystem-Container" {
     description "Shows the containers within the Bookstore System and their technologies."
 }
 
-// Additional focused container views
+// Focused API Layer View
 container bookstore_system "BookstoreSystem-APIs" {
     include "element.tag==API || element.tag==Database"
     include "bookstore_system -> *"
@@ -15,9 +15,13 @@ container bookstore_system "BookstoreSystem-APIs" {
     description "Focuses on the API layer and database interactions."
 }
 
+// Event Processing Flow View
 container bookstore_system "BookstoreSystem-EventFlow" {
     include "element.tag==Event Streaming || element.tag==Event Consumer || element.tag==Event Publisher"
-    include "admin_api,book_event_system,book_event_consumer,search_database"
+    include admin_api
+    include book_event_system
+    include book_event_consumer
+    include search_database
     autolayout lr
     title "Bookstore System - Event Processing Flow"
     description "Shows the event-driven architecture for book data synchronization."

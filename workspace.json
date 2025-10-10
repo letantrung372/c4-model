@@ -1,101 +1,438 @@
 {
-  "configuration" : {
-    "scope" : "SoftwareSystem"
-  },
-  "description" : "Description",
+  "configuration" : { },
+  "description" : "C4 diagrams for the Bookstore system.",
   "documentation" : { },
   "id" : 1,
   "lastModifiedAgent" : "structurizr-ui",
-  "lastModifiedDate" : "2025-10-10T10:13:08Z",
+  "lastModifiedDate" : "2025-10-10T11:02:40Z",
   "model" : {
     "people" : [ {
+      "description" : "Can search and view book information without authorization.",
       "id" : "1",
       "location" : "Unspecified",
-      "name" : "User",
+      "name" : "Public User",
       "properties" : {
-        "structurizr.dsl.identifier" : "u"
+        "structurizr.dsl.identifier" : "public_user"
       },
       "relationships" : [ {
-        "description" : "Uses",
-        "destinationId" : "3",
-        "id" : "5",
+        "description" : "Searches and views books",
+        "destinationId" : "7",
+        "id" : "21",
         "sourceId" : "1",
-        "tags" : "Relationship"
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
       }, {
         "description" : "Uses",
-        "destinationId" : "2",
-        "id" : "6",
-        "linkedRelationshipId" : "5",
-        "sourceId" : "1"
+        "destinationId" : "8",
+        "id" : "27",
+        "sourceId" : "1",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
       } ],
-      "tags" : "Element,Person"
-    } ],
-    "softwareSystems" : [ {
-      "containers" : [ {
-        "documentation" : { },
-        "id" : "3",
-        "name" : "Web Application",
-        "properties" : {
-          "structurizr.dsl.identifier" : "ss.wa"
-        },
-        "relationships" : [ {
-          "description" : "Reads from and writes to",
-          "destinationId" : "4",
-          "id" : "7",
-          "sourceId" : "3",
-          "tags" : "Relationship"
-        } ],
-        "tags" : "Element,Container"
-      }, {
-        "documentation" : { },
-        "id" : "4",
-        "name" : "Database Schema",
-        "properties" : {
-          "structurizr.dsl.identifier" : "ss.db"
-        },
-        "tags" : "Element,Container,Database"
-      } ],
-      "documentation" : { },
+      "tags" : "Element,Person,Customer"
+    }, {
+      "description" : "Can search books and place orders after authentication.",
       "id" : "2",
       "location" : "Unspecified",
-      "name" : "Software System",
+      "name" : "Authorized User",
       "properties" : {
-        "structurizr.dsl.identifier" : "ss"
+        "structurizr.dsl.identifier" : "authorized_user"
       },
-      "tags" : "Element,Software System"
+      "relationships" : [ {
+        "description" : "Searches books and places orders",
+        "destinationId" : "7",
+        "id" : "22",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "8",
+        "id" : "28",
+        "sourceId" : "2",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      } ],
+      "tags" : "Element,Person,Customer"
+    }, {
+      "description" : "Manages books, purchases, and system administration.",
+      "id" : "3",
+      "location" : "Unspecified",
+      "name" : "Internal User",
+      "properties" : {
+        "structurizr.dsl.identifier" : "internal_user"
+      },
+      "relationships" : [ {
+        "description" : "Manages books and purchases",
+        "destinationId" : "7",
+        "id" : "23",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      }, {
+        "description" : "Uses",
+        "destinationId" : "9",
+        "id" : "29",
+        "sourceId" : "3",
+        "tags" : "Relationship",
+        "technology" : "HTTPS"
+      } ],
+      "tags" : "Element,Person,Internal"
+    } ],
+    "softwareSystems" : [ {
+      "description" : "External system for user authorization and authentication.",
+      "documentation" : { },
+      "id" : "4",
+      "location" : "Unspecified",
+      "name" : "Identity Provider System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "identity_provider"
+      },
+      "tags" : "Element,Software System,External System"
+    }, {
+      "description" : "External system that provides published book details.",
+      "documentation" : { },
+      "id" : "5",
+      "location" : "Unspecified",
+      "name" : "Publisher System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "publisher_system"
+      },
+      "relationships" : [ {
+        "description" : "Sends book update events",
+        "destinationId" : "20",
+        "id" : "40",
+        "sourceId" : "5",
+        "tags" : "Relationship",
+        "technology" : "Webhook/REST"
+      } ],
+      "tags" : "Element,Software System,External System"
+    }, {
+      "description" : "3rd party service to handle book delivery.",
+      "documentation" : { },
+      "id" : "6",
+      "location" : "Unspecified",
+      "name" : "Shipping Service",
+      "properties" : {
+        "structurizr.dsl.identifier" : "shipping_service"
+      },
+      "tags" : "Element,Software System,External System"
+    }, {
+      "containers" : [ {
+        "description" : "Provides all bookstore functionalities to both public and authorized users.",
+        "documentation" : { },
+        "id" : "8",
+        "name" : "Front-store Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "front_store_app"
+        },
+        "relationships" : [ {
+          "description" : "Makes API calls to search books and place orders",
+          "destinationId" : "11",
+          "id" : "30",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "HTTPS/REST"
+        }, {
+          "description" : "Makes API calls to search books (authorized users only)",
+          "destinationId" : "10",
+          "id" : "31",
+          "sourceId" : "8",
+          "tags" : "Relationship",
+          "technology" : "HTTPS/REST"
+        } ],
+        "tags" : "Element,Container,Web App,Frontend",
+        "technology" : "React.js, JavaScript"
+      }, {
+        "description" : "Provides bookstore administration functionalities to internal users.",
+        "documentation" : { },
+        "id" : "9",
+        "name" : "Back-office Application",
+        "properties" : {
+          "structurizr.dsl.identifier" : "back_office_app"
+        },
+        "relationships" : [ {
+          "description" : "Makes API calls to administrate books and purchases",
+          "destinationId" : "12",
+          "id" : "32",
+          "sourceId" : "9",
+          "tags" : "Relationship",
+          "technology" : "HTTPS/REST"
+        }, {
+          "description" : "Requests authorization",
+          "destinationId" : "14",
+          "id" : "44",
+          "sourceId" : "9",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        }, {
+          "description" : "Manages book details",
+          "destinationId" : "13",
+          "id" : "45",
+          "sourceId" : "9",
+          "tags" : "Relationship",
+          "technology" : "HTTP"
+        } ],
+        "tags" : "Element,Container,Web App,Frontend,Internal",
+        "technology" : "React.js, JavaScript"
+      }, {
+        "description" : "Allows ONLY authorized users to search books using HTTPS. Authorized by Identity Provider System.",
+        "documentation" : { },
+        "id" : "10",
+        "name" : "Search API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "search_api"
+        },
+        "relationships" : [ {
+          "description" : "Authorizes users",
+          "destinationId" : "4",
+          "id" : "33",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "OAuth 2.0"
+        }, {
+          "description" : "Reads book search data",
+          "destinationId" : "16",
+          "id" : "36",
+          "sourceId" : "10",
+          "tags" : "Relationship",
+          "technology" : "TCP/IP"
+        } ],
+        "tags" : "Element,Container,API,Backend",
+        "technology" : "Go, REST API"
+      }, {
+        "description" : "Allows public users to search books using HTTPS.",
+        "documentation" : { },
+        "id" : "11",
+        "name" : "Public Web API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "public_api"
+        },
+        "relationships" : [ {
+          "description" : "Processes delivery requests",
+          "destinationId" : "6",
+          "id" : "35",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "REST API"
+        }, {
+          "description" : "Reads/writes data",
+          "destinationId" : "17",
+          "id" : "37",
+          "sourceId" : "11",
+          "tags" : "Relationship",
+          "technology" : "TCP/IP"
+        } ],
+        "tags" : "Element,Container,API,Backend,Public",
+        "technology" : "Go, REST API"
+      }, {
+        "components" : [ {
+          "description" : "Administrates book details, reads and writes data to Bookstore Database.",
+          "documentation" : { },
+          "id" : "13",
+          "name" : "Book Service",
+          "properties" : {
+            "structurizr.dsl.identifier" : "book_service"
+          },
+          "relationships" : [ {
+            "description" : "Reads/writes book data",
+            "destinationId" : "17",
+            "id" : "47",
+            "sourceId" : "13",
+            "tags" : "Relationship",
+            "technology" : "TCP/IP"
+          }, {
+            "description" : "Triggers book events",
+            "destinationId" : "15",
+            "id" : "48",
+            "sourceId" : "13",
+            "tags" : "Relationship",
+            "technology" : "In-process call"
+          } ],
+          "tags" : "Element,Component,Service",
+          "technology" : "Go"
+        }, {
+          "description" : "Authorizes internal users using external Identity Provider System.",
+          "documentation" : { },
+          "id" : "14",
+          "name" : "Authorizer",
+          "properties" : {
+            "structurizr.dsl.identifier" : "authorizer"
+          },
+          "relationships" : [ {
+            "description" : "Validates user credentials",
+            "destinationId" : "4",
+            "id" : "46",
+            "sourceId" : "14",
+            "tags" : "Relationship",
+            "technology" : "OAuth 2.0"
+          } ],
+          "tags" : "Element,Component,Security",
+          "technology" : "Go"
+        }, {
+          "description" : "Publishes book-related events to the Book Event System.",
+          "documentation" : { },
+          "id" : "15",
+          "name" : "Book Events Publisher",
+          "properties" : {
+            "structurizr.dsl.identifier" : "book_events_publisher"
+          },
+          "relationships" : [ {
+            "description" : "Publishes events",
+            "destinationId" : "18",
+            "id" : "49",
+            "sourceId" : "15",
+            "tags" : "Relationship",
+            "technology" : "Kafka Protocol"
+          } ],
+          "tags" : "Element,Component,Event Publisher",
+          "technology" : "Go, Kafka Client"
+        } ],
+        "description" : "Allows ONLY internal users to manage books and purchases using HTTPS. Authorized by Identity Provider System.",
+        "documentation" : { },
+        "id" : "12",
+        "name" : "Admin Web API",
+        "properties" : {
+          "structurizr.dsl.identifier" : "admin_api"
+        },
+        "relationships" : [ {
+          "description" : "Authorizes internal users",
+          "destinationId" : "4",
+          "id" : "34",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "OAuth 2.0"
+        }, {
+          "description" : "Reads/writes data",
+          "destinationId" : "17",
+          "id" : "38",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "TCP/IP"
+        }, {
+          "description" : "Publishes book events",
+          "destinationId" : "18",
+          "id" : "42",
+          "sourceId" : "12",
+          "tags" : "Relationship",
+          "technology" : "Kafka Protocol"
+        } ],
+        "tags" : "Element,Container,API,Backend,Internal",
+        "technology" : "Go, REST API"
+      }, {
+        "description" : "Stores book searchable data, populated by Book Event Consumer.",
+        "documentation" : { },
+        "id" : "16",
+        "name" : "Search Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "search_database"
+        },
+        "tags" : "Element,Container,Database,Search",
+        "technology" : "Elasticsearch"
+      }, {
+        "description" : "Stores all bookstore data including books, users, and purchases.",
+        "documentation" : { },
+        "id" : "17",
+        "name" : "Bookstore Database",
+        "properties" : {
+          "structurizr.dsl.identifier" : "bookstore_database"
+        },
+        "tags" : "Element,Container,Database,Primary",
+        "technology" : "PostgreSQL"
+      }, {
+        "description" : "Handles book published events and forwards to Book Event Consumer.",
+        "documentation" : { },
+        "id" : "18",
+        "name" : "Book Event System",
+        "properties" : {
+          "structurizr.dsl.identifier" : "book_event_system"
+        },
+        "relationships" : [ {
+          "description" : "Forwards book events",
+          "destinationId" : "19",
+          "id" : "43",
+          "sourceId" : "18",
+          "tags" : "Relationship",
+          "technology" : "Kafka Protocol"
+        } ],
+        "tags" : "Element,Container,Message Broker,Event Streaming",
+        "technology" : "Apache Kafka 3.0"
+      }, {
+        "description" : "Handles book update events and writes to Search Database.",
+        "documentation" : { },
+        "id" : "19",
+        "name" : "Book Search Event Consumer",
+        "properties" : {
+          "structurizr.dsl.identifier" : "book_event_consumer"
+        },
+        "relationships" : [ {
+          "description" : "Writes search data",
+          "destinationId" : "16",
+          "id" : "39",
+          "sourceId" : "19",
+          "tags" : "Relationship",
+          "technology" : "TCP/IP"
+        } ],
+        "tags" : "Element,Container,Event Consumer,Backend",
+        "technology" : "Go, Kafka Consumer"
+      }, {
+        "description" : "Listens to external events from Publisher System and updates data via Admin Web API.",
+        "documentation" : { },
+        "id" : "20",
+        "name" : "Publisher Recurrent Updater",
+        "properties" : {
+          "structurizr.dsl.identifier" : "publisher_updater"
+        },
+        "relationships" : [ {
+          "description" : "Updates book data",
+          "destinationId" : "12",
+          "id" : "41",
+          "sourceId" : "20",
+          "tags" : "Relationship",
+          "technology" : "HTTPS/REST"
+        } ],
+        "tags" : "Element,Container,Background Service,Integration",
+        "technology" : "Go, Scheduled Service"
+      } ],
+      "description" : "Allows users to interact with book records, search, and purchase books.",
+      "documentation" : { },
+      "id" : "7",
+      "location" : "Unspecified",
+      "name" : "Bookstore System",
+      "properties" : {
+        "structurizr.dsl.identifier" : "bookstore_system"
+      },
+      "relationships" : [ {
+        "description" : "Authorizes users",
+        "destinationId" : "4",
+        "id" : "24",
+        "sourceId" : "7",
+        "tags" : "Relationship",
+        "technology" : "OAuth 2.0/OIDC"
+      }, {
+        "description" : "Gets published book details",
+        "destinationId" : "5",
+        "id" : "25",
+        "sourceId" : "7",
+        "tags" : "Relationship",
+        "technology" : "REST API"
+      }, {
+        "description" : "Handles book delivery",
+        "destinationId" : "6",
+        "id" : "26",
+        "sourceId" : "7",
+        "tags" : "Relationship",
+        "technology" : "REST API"
+      } ],
+      "tags" : "Element,Software System,Internal System"
     } ]
   },
-  "name" : "Name",
+  "name" : "Bookstore C4 Model",
   "properties" : {
-    "structurizr.dsl" : "d29ya3NwYWNlICJOYW1lIiAiRGVzY3JpcHRpb24iIHsKCiAgICAhaWRlbnRpZmllcnMgaGllcmFyY2hpY2FsCgogICAgbW9kZWwgewogICAgICAgIHUgPSBwZXJzb24gIlVzZXIiCiAgICAgICAgc3MgPSBzb2Z0d2FyZVN5c3RlbSAiU29mdHdhcmUgU3lzdGVtIiB7CiAgICAgICAgICAgIHdhID0gY29udGFpbmVyICJXZWIgQXBwbGljYXRpb24iCiAgICAgICAgICAgIGRiID0gY29udGFpbmVyICJEYXRhYmFzZSBTY2hlbWEiIHsKICAgICAgICAgICAgICAgIHRhZ3MgIkRhdGFiYXNlIgogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICB1IC0+IHNzLndhICJVc2VzIgogICAgICAgIHNzLndhIC0+IHNzLmRiICJSZWFkcyBmcm9tIGFuZCB3cml0ZXMgdG8iCiAgICB9CgogICAgdmlld3MgewogICAgICAgIHN5c3RlbUNvbnRleHQgc3MgIkRpYWdyYW0xIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBjb250YWluZXIgc3MgIkRpYWdyYW0yIiB7CiAgICAgICAgICAgIGluY2x1ZGUgKgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgfQoKICAgICAgICBzdHlsZXMgewogICAgICAgICAgICBlbGVtZW50ICJFbGVtZW50IiB7CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiUGVyc29uIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNkMzQ0MDcKICAgICAgICAgICAgICAgIHNoYXBlIHBlcnNvbgogICAgICAgICAgICB9CiAgICAgICAgICAgIGVsZW1lbnQgIlNvZnR3YXJlIFN5c3RlbSIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjZjg2NjI4CiAgICAgICAgICAgIH0KICAgICAgICAgICAgZWxlbWVudCAiQ29udGFpbmVyIiB7CiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICNmODg3MjgKICAgICAgICAgICAgfQogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgY3lsaW5kZXIKICAgICAgICAgICAgfQogICAgICAgIH0KICAgIH0KCiAgICBjb25maWd1cmF0aW9uIHsKICAgICAgICBzY29wZSBzb2Z0d2FyZXN5c3RlbQogICAgfQoKfQ=="
+    "structurizr.dsl" : "d29ya3NwYWNlICJCb29rc3RvcmUgQzQgTW9kZWwiICJDNCBkaWFncmFtcyBmb3IgdGhlIEJvb2tzdG9yZSBzeXN0ZW0uIiB7CgogICAgIWlkZW50aWZpZXJzIGZsYXQKICAgICFpbXBsaWVkUmVsYXRpb25zaGlwcyBmYWxzZQoKICAgIG1vZGVsIHsKICAgICAgICAvLyBQZW9wbGUvQWN0b3JzIGluIHRoZSBzeXN0ZW0KICAgICAgICBwdWJsaWNfdXNlciA9IHBlcnNvbiAiUHVibGljIFVzZXIiICJVc2VyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJDYW4gc2VhcmNoIGFuZCB2aWV3IGJvb2sgaW5mb3JtYXRpb24gd2l0aG91dCBhdXRob3JpemF0aW9uLiIKICAgICAgICAgICAgdGFncyAiQ3VzdG9tZXIiCiAgICAgICAgfQogICAgICAgIAogICAgICAgIGF1dGhvcml6ZWRfdXNlciA9IHBlcnNvbiAiQXV0aG9yaXplZCBVc2VyIiAiVXNlciIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiQ2FuIHNlYXJjaCBib29rcyBhbmQgcGxhY2Ugb3JkZXJzIGFmdGVyIGF1dGhlbnRpY2F0aW9uLiIKICAgICAgICAgICAgdGFncyAiQ3VzdG9tZXIiCiAgICAgICAgfQogICAgICAgIAogICAgICAgIGludGVybmFsX3VzZXIgPSBwZXJzb24gIkludGVybmFsIFVzZXIiICJTdGFmZiIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiTWFuYWdlcyBib29rcywgcHVyY2hhc2VzLCBhbmQgc3lzdGVtIGFkbWluaXN0cmF0aW9uLiIKICAgICAgICAgICAgdGFncyAiSW50ZXJuYWwiCiAgICAgICAgfQogICAgICAgIC8vIEV4dGVybmFsIFN5c3RlbXMKICAgICAgICBpZGVudGl0eV9wcm92aWRlciA9IHNvZnR3YXJlU3lzdGVtICJJZGVudGl0eSBQcm92aWRlciBTeXN0ZW0iICJBdXRoZW50aWNhdGlvbiIgewogICAgICAgICAgICBkZXNjcmlwdGlvbiAiRXh0ZXJuYWwgc3lzdGVtIGZvciB1c2VyIGF1dGhvcml6YXRpb24gYW5kIGF1dGhlbnRpY2F0aW9uLiIKICAgICAgICAgICAgdGFncyAiRXh0ZXJuYWwgU3lzdGVtIgogICAgICAgIH0KICAgICAgICAKICAgICAgICBwdWJsaXNoZXJfc3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIlB1Ymxpc2hlciBTeXN0ZW0iICJDb250ZW50IFByb3ZpZGVyIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJFeHRlcm5hbCBzeXN0ZW0gdGhhdCBwcm92aWRlcyBwdWJsaXNoZWQgYm9vayBkZXRhaWxzLiIKICAgICAgICAgICAgdGFncyAiRXh0ZXJuYWwgU3lzdGVtIgogICAgICAgIH0KICAgICAgICAKICAgICAgICBzaGlwcGluZ19zZXJ2aWNlID0gc29mdHdhcmVTeXN0ZW0gIlNoaXBwaW5nIFNlcnZpY2UiICJMb2dpc3RpY3MiIHsKICAgICAgICAgICAgZGVzY3JpcHRpb24gIjNyZCBwYXJ0eSBzZXJ2aWNlIHRvIGhhbmRsZSBib29rIGRlbGl2ZXJ5LiIKICAgICAgICAgICAgdGFncyAiRXh0ZXJuYWwgU3lzdGVtIgogICAgICAgIH0KICAgICAgICAvLyBNYWluIEJvb2tzdG9yZSBTeXN0ZW0KICAgICAgICBib29rc3RvcmVfc3lzdGVtID0gc29mdHdhcmVTeXN0ZW0gIkJvb2tzdG9yZSBTeXN0ZW0iICJFLWNvbW1lcmNlIiB7CiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgdXNlcnMgdG8gaW50ZXJhY3Qgd2l0aCBib29rIHJlY29yZHMsIHNlYXJjaCwgYW5kIHB1cmNoYXNlIGJvb2tzLiIKICAgICAgICAgICAgdGFncyAiSW50ZXJuYWwgU3lzdGVtIgogICAgICAgIAogICAgICAgICAgICAvLyBGcm9udC1lbmQgQXBwbGljYXRpb25zCiAgICAgICAgICAgIGZyb250X3N0b3JlX2FwcCA9IGNvbnRhaW5lciAiRnJvbnQtc3RvcmUgQXBwbGljYXRpb24iICJKYXZhU2NyaXB0ICYgUmVhY3RKUyIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlByb3ZpZGVzIGFsbCBib29rc3RvcmUgZnVuY3Rpb25hbGl0aWVzIHRvIGJvdGggcHVibGljIGFuZCBhdXRob3JpemVkIHVzZXJzLiIKICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIlJlYWN0LmpzLCBKYXZhU2NyaXB0IgogICAgICAgICAgICAgICAgdGFncyAiV2ViIEFwcCxGcm9udGVuZCIKICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgYmFja19vZmZpY2VfYXBwID0gY29udGFpbmVyICJCYWNrLW9mZmljZSBBcHBsaWNhdGlvbiIgIkphdmFTY3JpcHQgJiBSZWFjdEpTIiB7CiAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiUHJvdmlkZXMgYm9va3N0b3JlIGFkbWluaXN0cmF0aW9uIGZ1bmN0aW9uYWxpdGllcyB0byBpbnRlcm5hbCB1c2Vycy4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJSZWFjdC5qcywgSmF2YVNjcmlwdCIKICAgICAgICAgICAgICAgIHRhZ3MgIldlYiBBcHAsRnJvbnRlbmQsSW50ZXJuYWwiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgCiAgICAgICAgICAgIC8vIEJhY2tlbmQgQVBJcwogICAgICAgICAgICBzZWFyY2hfYXBpID0gY29udGFpbmVyICJTZWFyY2ggQVBJIiAiR28iIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgT05MWSBhdXRob3JpemVkIHVzZXJzIHRvIHNlYXJjaCBib29rcyB1c2luZyBIVFRQUy4gQXV0aG9yaXplZCBieSBJZGVudGl0eSBQcm92aWRlciBTeXN0ZW0uIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiR28sIFJFU1QgQVBJIgogICAgICAgICAgICAgICAgdGFncyAiQVBJLEJhY2tlbmQiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgCiAgICAgICAgICAgIHB1YmxpY19hcGkgPSBjb250YWluZXIgIlB1YmxpYyBXZWIgQVBJIiAiR28iIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBbGxvd3MgcHVibGljIHVzZXJzIHRvIHNlYXJjaCBib29rcyB1c2luZyBIVFRQUy4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJHbywgUkVTVCBBUEkiCiAgICAgICAgICAgICAgICB0YWdzICJBUEksQmFja2VuZCxQdWJsaWMiCiAgICAgICAgICAgIH0KICAgICAgICAgICAgCiAgICAgICAgICAgIGFkbWluX2FwaSA9IGNvbnRhaW5lciAiQWRtaW4gV2ViIEFQSSIgIkdvIiB7CiAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWxsb3dzIE9OTFkgaW50ZXJuYWwgdXNlcnMgdG8gbWFuYWdlIGJvb2tzIGFuZCBwdXJjaGFzZXMgdXNpbmcgSFRUUFMuIEF1dGhvcml6ZWQgYnkgSWRlbnRpdHkgUHJvdmlkZXIgU3lzdGVtLiIKICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIkdvLCBSRVNUIEFQSSIKICAgICAgICAgICAgICAgIHRhZ3MgIkFQSSxCYWNrZW5kLEludGVybmFsIgogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAvLyBDb21wb25lbnRzIGZvciBMZXZlbCAzCiAgICAgICAgICAgICAgICBib29rX3NlcnZpY2UgPSBjb21wb25lbnQgIkJvb2sgU2VydmljZSIgIlNlcnZpY2UiIHsKICAgICAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiQWRtaW5pc3RyYXRlcyBib29rIGRldGFpbHMsIHJlYWRzIGFuZCB3cml0ZXMgZGF0YSB0byBCb29rc3RvcmUgRGF0YWJhc2UuIgogICAgICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIkdvIgogICAgICAgICAgICAgICAgICAgIHRhZ3MgIlNlcnZpY2UiCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgIGF1dGhvcml6ZXIgPSBjb21wb25lbnQgIkF1dGhvcml6ZXIiICJTZWN1cml0eSIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJBdXRob3JpemVzIGludGVybmFsIHVzZXJzIHVzaW5nIGV4dGVybmFsIElkZW50aXR5IFByb3ZpZGVyIFN5c3RlbS4iCiAgICAgICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiR28iCiAgICAgICAgICAgICAgICAgICAgdGFncyAiU2VjdXJpdHksQ29tcG9uZW50IgogICAgICAgICAgICAgICAgfQogICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICBib29rX2V2ZW50c19wdWJsaXNoZXIgPSBjb21wb25lbnQgIkJvb2sgRXZlbnRzIFB1Ymxpc2hlciIgIlB1Ymxpc2hlciIgewogICAgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJQdWJsaXNoZXMgYm9vay1yZWxhdGVkIGV2ZW50cyB0byB0aGUgQm9vayBFdmVudCBTeXN0ZW0uIgogICAgICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIkdvLCBLYWZrYSBDbGllbnQiCiAgICAgICAgICAgICAgICAgICAgdGFncyAiRXZlbnQgUHVibGlzaGVyLENvbXBvbmVudCIKICAgICAgICAgICAgICAgIH0KICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgLy8gRGF0YWJhc2VzCiAgICAgICAgICAgIHNlYXJjaF9kYXRhYmFzZSA9IGNvbnRhaW5lciAiU2VhcmNoIERhdGFiYXNlIiAiRWxhc3RpY3NlYXJjaCIgewogICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gIlN0b3JlcyBib29rIHNlYXJjaGFibGUgZGF0YSwgcG9wdWxhdGVkIGJ5IEJvb2sgRXZlbnQgQ29uc3VtZXIuIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiRWxhc3RpY3NlYXJjaCIKICAgICAgICAgICAgICAgIHRhZ3MgIkRhdGFiYXNlLFNlYXJjaCIKICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgYm9va3N0b3JlX2RhdGFiYXNlID0gY29udGFpbmVyICJCb29rc3RvcmUgRGF0YWJhc2UiICJQb3N0Z3JlU1FMIiB7CiAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiU3RvcmVzIGFsbCBib29rc3RvcmUgZGF0YSBpbmNsdWRpbmcgYm9va3MsIHVzZXJzLCBhbmQgcHVyY2hhc2VzLiIKICAgICAgICAgICAgICAgIHRlY2hub2xvZ3kgIlBvc3RncmVTUUwiCiAgICAgICAgICAgICAgICB0YWdzICJEYXRhYmFzZSxQcmltYXJ5IgogICAgICAgICAgICB9CiAgICAgICAgICAgIAogICAgICAgICAgICAvLyBFdmVudCBQcm9jZXNzaW5nCiAgICAgICAgICAgIGJvb2tfZXZlbnRfc3lzdGVtID0gY29udGFpbmVyICJCb29rIEV2ZW50IFN5c3RlbSIgIkFwYWNoZSBLYWZrYSAzLjAiIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJIYW5kbGVzIGJvb2sgcHVibGlzaGVkIGV2ZW50cyBhbmQgZm9yd2FyZHMgdG8gQm9vayBFdmVudCBDb25zdW1lci4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJBcGFjaGUgS2Fma2EgMy4wIgogICAgICAgICAgICAgICAgdGFncyAiTWVzc2FnZSBCcm9rZXIsRXZlbnQgU3RyZWFtaW5nIgogICAgICAgICAgICB9CiAgICAgICAgICAgIAogICAgICAgICAgICBib29rX2V2ZW50X2NvbnN1bWVyID0gY29udGFpbmVyICJCb29rIFNlYXJjaCBFdmVudCBDb25zdW1lciIgIkdvIiB7CiAgICAgICAgICAgICAgICBkZXNjcmlwdGlvbiAiSGFuZGxlcyBib29rIHVwZGF0ZSBldmVudHMgYW5kIHdyaXRlcyB0byBTZWFyY2ggRGF0YWJhc2UuIgogICAgICAgICAgICAgICAgdGVjaG5vbG9neSAiR28sIEthZmthIENvbnN1bWVyIgogICAgICAgICAgICAgICAgdGFncyAiRXZlbnQgQ29uc3VtZXIsQmFja2VuZCIKICAgICAgICAgICAgfQogICAgICAgICAgICAKICAgICAgICAgICAgLy8gQmFja2dyb3VuZCBTZXJ2aWNlcwogICAgICAgICAgICBwdWJsaXNoZXJfdXBkYXRlciA9IGNvbnRhaW5lciAiUHVibGlzaGVyIFJlY3VycmVudCBVcGRhdGVyIiAiR28iIHsKICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uICJMaXN0ZW5zIHRvIGV4dGVybmFsIGV2ZW50cyBmcm9tIFB1Ymxpc2hlciBTeXN0ZW0gYW5kIHVwZGF0ZXMgZGF0YSB2aWEgQWRtaW4gV2ViIEFQSS4iCiAgICAgICAgICAgICAgICB0ZWNobm9sb2d5ICJHbywgU2NoZWR1bGVkIFNlcnZpY2UiCiAgICAgICAgICAgICAgICB0YWdzICJCYWNrZ3JvdW5kIFNlcnZpY2UsSW50ZWdyYXRpb24iCiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICAgICAgLy8gTGV2ZWwgMSAtIENvbnRleHQgUmVsYXRpb25zaGlwcwogICAgICAgIHB1YmxpY191c2VyIC0+IGJvb2tzdG9yZV9zeXN0ZW0gIlNlYXJjaGVzIGFuZCB2aWV3cyBib29rcyIgIkhUVFBTIgogICAgICAgIGF1dGhvcml6ZWRfdXNlciAtPiBib29rc3RvcmVfc3lzdGVtICJTZWFyY2hlcyBib29rcyBhbmQgcGxhY2VzIG9yZGVycyIgIkhUVFBTIgogICAgICAgIGludGVybmFsX3VzZXIgLT4gYm9va3N0b3JlX3N5c3RlbSAiTWFuYWdlcyBib29rcyBhbmQgcHVyY2hhc2VzIiAiSFRUUFMiCiAgICAgICAgCiAgICAgICAgYm9va3N0b3JlX3N5c3RlbSAtPiBpZGVudGl0eV9wcm92aWRlciAiQXV0aG9yaXplcyB1c2VycyIgIk9BdXRoIDIuMC9PSURDIgogICAgICAgIGJvb2tzdG9yZV9zeXN0ZW0gLT4gcHVibGlzaGVyX3N5c3RlbSAiR2V0cyBwdWJsaXNoZWQgYm9vayBkZXRhaWxzIiAiUkVTVCBBUEkiCiAgICAgICAgYm9va3N0b3JlX3N5c3RlbSAtPiBzaGlwcGluZ19zZXJ2aWNlICJIYW5kbGVzIGJvb2sgZGVsaXZlcnkiICJSRVNUIEFQSSIKICAgICAgICAKICAgICAgICAvLyBMZXZlbCAyIC0gQ29udGFpbmVyIFJlbGF0aW9uc2hpcHMKICAgICAgICAvLyBVc2VyIHRvIEFwcGxpY2F0aW9uIEludGVyYWN0aW9ucwogICAgICAgIHB1YmxpY191c2VyIC0+IGZyb250X3N0b3JlX2FwcCAiVXNlcyIgIkhUVFBTIgogICAgICAgIGF1dGhvcml6ZWRfdXNlciAtPiBmcm9udF9zdG9yZV9hcHAgIlVzZXMiICJIVFRQUyIKICAgICAgICBpbnRlcm5hbF91c2VyIC0+IGJhY2tfb2ZmaWNlX2FwcCAiVXNlcyIgIkhUVFBTIgogICAgICAgIC8vIEZyb250ZW5kIHRvIEFQSSBJbnRlcmFjdGlvbnMKICAgICAgICBmcm9udF9zdG9yZV9hcHAgLT4gcHVibGljX2FwaSAiTWFrZXMgQVBJIGNhbGxzIHRvIHNlYXJjaCBib29rcyBhbmQgcGxhY2Ugb3JkZXJzIiAiSFRUUFMvUkVTVCIKICAgICAgICBmcm9udF9zdG9yZV9hcHAgLT4gc2VhcmNoX2FwaSAiTWFrZXMgQVBJIGNhbGxzIHRvIHNlYXJjaCBib29rcyAoYXV0aG9yaXplZCB1c2VycyBvbmx5KSIgIkhUVFBTL1JFU1QiCiAgICAgICAgYmFja19vZmZpY2VfYXBwIC0+IGFkbWluX2FwaSAiTWFrZXMgQVBJIGNhbGxzIHRvIGFkbWluaXN0cmF0ZSBib29rcyBhbmQgcHVyY2hhc2VzIiAiSFRUUFMvUkVTVCIKICAgICAgICAKICAgICAgICAvLyBBUEkgdG8gRXh0ZXJuYWwgU3lzdGVtIEludGVyYWN0aW9ucwogICAgICAgIHNlYXJjaF9hcGkgLT4gaWRlbnRpdHlfcHJvdmlkZXIgIkF1dGhvcml6ZXMgdXNlcnMiICJPQXV0aCAyLjAiCiAgICAgICAgYWRtaW5fYXBpIC0+IGlkZW50aXR5X3Byb3ZpZGVyICJBdXRob3JpemVzIGludGVybmFsIHVzZXJzIiAiT0F1dGggMi4wIgogICAgICAgIHB1YmxpY19hcGkgLT4gc2hpcHBpbmdfc2VydmljZSAiUHJvY2Vzc2VzIGRlbGl2ZXJ5IHJlcXVlc3RzIiAiUkVTVCBBUEkiCiAgICAgICAgLy8gRGF0YWJhc2UgSW50ZXJhY3Rpb25zCiAgICAgICAgc2VhcmNoX2FwaSAtPiBzZWFyY2hfZGF0YWJhc2UgIlJlYWRzIGJvb2sgc2VhcmNoIGRhdGEiICJUQ1AvSVAiCiAgICAgICAgcHVibGljX2FwaSAtPiBib29rc3RvcmVfZGF0YWJhc2UgIlJlYWRzL3dyaXRlcyBkYXRhIiAiVENQL0lQIgogICAgICAgIGFkbWluX2FwaSAtPiBib29rc3RvcmVfZGF0YWJhc2UgIlJlYWRzL3dyaXRlcyBkYXRhIiAiVENQL0lQIgogICAgICAgIGJvb2tfZXZlbnRfY29uc3VtZXIgLT4gc2VhcmNoX2RhdGFiYXNlICJXcml0ZXMgc2VhcmNoIGRhdGEiICJUQ1AvSVAiCiAgICAgICAgCiAgICAgICAgLy8gRXh0ZXJuYWwgRGF0YSBJbnRlZ3JhdGlvbgogICAgICAgIHB1Ymxpc2hlcl9zeXN0ZW0gLT4gcHVibGlzaGVyX3VwZGF0ZXIgIlNlbmRzIGJvb2sgdXBkYXRlIGV2ZW50cyIgIldlYmhvb2svUkVTVCIKICAgICAgICBwdWJsaXNoZXJfdXBkYXRlciAtPiBhZG1pbl9hcGkgIlVwZGF0ZXMgYm9vayBkYXRhIiAiSFRUUFMvUkVTVCIKICAgICAgICAvLyBFdmVudCBTeXN0ZW0gSW50ZXJhY3Rpb25zCiAgICAgICAgYWRtaW5fYXBpIC0+IGJvb2tfZXZlbnRfc3lzdGVtICJQdWJsaXNoZXMgYm9vayBldmVudHMiICJLYWZrYSBQcm90b2NvbCIKICAgICAgICBib29rX2V2ZW50X3N5c3RlbSAtPiBib29rX2V2ZW50X2NvbnN1bWVyICJGb3J3YXJkcyBib29rIGV2ZW50cyIgIkthZmthIFByb3RvY29sIgogICAgICAgIAogICAgICAgIC8vIExldmVsIDMgLSBDb21wb25lbnQgUmVsYXRpb25zaGlwcyAoQWRtaW4gV2ViIEFQSSkKICAgICAgICAvLyBDb21wb25lbnQgTGV2ZWwgSW50ZXJhY3Rpb25zIChBZG1pbiBXZWIgQVBJKQogICAgICAgIGJhY2tfb2ZmaWNlX2FwcCAtPiBhdXRob3JpemVyICJSZXF1ZXN0cyBhdXRob3JpemF0aW9uIiAiSFRUUCIKICAgICAgICBiYWNrX29mZmljZV9hcHAgLT4gYm9va19zZXJ2aWNlICJNYW5hZ2VzIGJvb2sgZGV0YWlscyIgIkhUVFAiCiAgICAgICAgCiAgICAgICAgYXV0aG9yaXplciAtPiBpZGVudGl0eV9wcm92aWRlciAiVmFsaWRhdGVzIHVzZXIgY3JlZGVudGlhbHMiICJPQXV0aCAyLjAiCiAgICAgICAgYm9va19zZXJ2aWNlIC0+IGJvb2tzdG9yZV9kYXRhYmFzZSAiUmVhZHMvd3JpdGVzIGJvb2sgZGF0YSIgIlRDUC9JUCIKICAgICAgICBib29rX3NlcnZpY2UgLT4gYm9va19ldmVudHNfcHVibGlzaGVyICJUcmlnZ2VycyBib29rIGV2ZW50cyIgIkluLXByb2Nlc3MgY2FsbCIKICAgICAgICBib29rX2V2ZW50c19wdWJsaXNoZXIgLT4gYm9va19ldmVudF9zeXN0ZW0gIlB1Ymxpc2hlcyBldmVudHMiICJLYWZrYSBQcm90b2NvbCIKICAgIH0KCiAgICB2aWV3cyB7CiAgICAgICAgc3lzdGVtQ29udGV4dCBib29rc3RvcmVfc3lzdGVtICJCb29rc3RvcmVTeXN0ZW0tQ29udGV4dCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgICAgICB0aXRsZSAiQm9va3N0b3JlIFN5c3RlbSAtIENvbnRleHQgRGlhZ3JhbSAoTGV2ZWwgMSkiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTaG93cyBob3cgdGhlIEJvb2tzdG9yZSBTeXN0ZW0gZml0cyBpbnRvIHRoZSB3aWRlciBlbnZpcm9ubWVudCB3aXRoIHVzZXJzIGFuZCBleHRlcm5hbCBzeXN0ZW1zLiIKICAgICAgICB9CiAgICAgICAgY29udGFpbmVyIGJvb2tzdG9yZV9zeXN0ZW0gIkJvb2tzdG9yZVN5c3RlbS1Db250YWluZXIiIHsKICAgICAgICAgICAgaW5jbHVkZSAqCiAgICAgICAgICAgIGF1dG9sYXlvdXQgdGIKICAgICAgICAgICAgdGl0bGUgIkJvb2tzdG9yZSBTeXN0ZW0gLSBDb250YWluZXIgRGlhZ3JhbSAoTGV2ZWwgMikiCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTaG93cyB0aGUgY29udGFpbmVycyB3aXRoaW4gdGhlIEJvb2tzdG9yZSBTeXN0ZW0gYW5kIHRoZWlyIHRlY2hub2xvZ2llcy4iCiAgICAgICAgfQogICAgICAgIAogICAgICAgIC8vIEZvY3VzZWQgQVBJIExheWVyIFZpZXcKICAgICAgICBjb250YWluZXIgYm9va3N0b3JlX3N5c3RlbSAiQm9va3N0b3JlU3lzdGVtLUFQSXMiIHsKICAgICAgICAgICAgaW5jbHVkZSAiZWxlbWVudC50YWc9PUFQSSB8fCBlbGVtZW50LnRhZz09RGF0YWJhc2UiCiAgICAgICAgICAgIGluY2x1ZGUgImJvb2tzdG9yZV9zeXN0ZW0gLT4gKiIKICAgICAgICAgICAgaW5jbHVkZSAiKiAtPiBib29rc3RvcmVfc3lzdGVtIgogICAgICAgICAgICBhdXRvbGF5b3V0IGxyCiAgICAgICAgICAgIHRpdGxlICJCb29rc3RvcmUgU3lzdGVtIC0gQVBJIExheWVyIgogICAgICAgICAgICBkZXNjcmlwdGlvbiAiRm9jdXNlcyBvbiB0aGUgQVBJIGxheWVyIGFuZCBkYXRhYmFzZSBpbnRlcmFjdGlvbnMuIgogICAgICAgIH0KICAgICAgICAKICAgICAgICAvLyBFdmVudCBQcm9jZXNzaW5nIEZsb3cgVmlldwogICAgICAgIGNvbnRhaW5lciBib29rc3RvcmVfc3lzdGVtICJCb29rc3RvcmVTeXN0ZW0tRXZlbnRGbG93IiB7CiAgICAgICAgICAgIGluY2x1ZGUgImVsZW1lbnQudGFnPT1FdmVudCBTdHJlYW1pbmcgfHwgZWxlbWVudC50YWc9PUV2ZW50IENvbnN1bWVyIHx8IGVsZW1lbnQudGFnPT1FdmVudCBQdWJsaXNoZXIiCiAgICAgICAgICAgIGluY2x1ZGUgYWRtaW5fYXBpCiAgICAgICAgICAgIGluY2x1ZGUgYm9va19ldmVudF9zeXN0ZW0KICAgICAgICAgICAgaW5jbHVkZSBib29rX2V2ZW50X2NvbnN1bWVyCiAgICAgICAgICAgIGluY2x1ZGUgc2VhcmNoX2RhdGFiYXNlCiAgICAgICAgICAgIGF1dG9sYXlvdXQgbHIKICAgICAgICAgICAgdGl0bGUgIkJvb2tzdG9yZSBTeXN0ZW0gLSBFdmVudCBQcm9jZXNzaW5nIEZsb3ciCiAgICAgICAgICAgIGRlc2NyaXB0aW9uICJTaG93cyB0aGUgZXZlbnQtZHJpdmVuIGFyY2hpdGVjdHVyZSBmb3IgYm9vayBkYXRhIHN5bmNocm9uaXphdGlvbi4iCiAgICAgICAgfQogICAgICAgIGNvbXBvbmVudCBhZG1pbl9hcGkgIkFkbWluV2ViQVBJLUNvbXBvbmVudCIgewogICAgICAgICAgICBpbmNsdWRlICoKICAgICAgICAgICAgYXV0b2xheW91dCBscgogICAgICAgICAgICB0aXRsZSAiQWRtaW4gV2ViIEFQSSAtIENvbXBvbmVudCBEaWFncmFtIChMZXZlbCAzKSIKICAgICAgICAgICAgZGVzY3JpcHRpb24gIlNob3dzIHRoZSBjb21wb25lbnRzIHdpdGhpbiB0aGUgQWRtaW4gV2ViIEFQSSBjb250YWluZXIgYW5kIHRoZWlyIGludGVyYWN0aW9ucy4iCiAgICAgICAgfQogICAgICAgIAogICAgICAgIHN0eWxlcyB7CiAgICAgICAgICAgIGVsZW1lbnQgIlBlcnNvbiIgewogICAgICAgICAgICAgICAgc2hhcGUgcGVyc29uCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICMwODQyN2IKICAgICAgICAgICAgICAgIGNvbG9yICNmZmZmZmYKICAgICAgICAgICAgfQogICAgICAgIAogICAgICAgICAgICBlbGVtZW50ICJTb2Z0d2FyZSBTeXN0ZW0iIHsKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzExNjhiZAogICAgICAgICAgICAgICAgY29sb3IgI2ZmZmZmZgogICAgICAgICAgICB9CiAgICAgICAgCiAgICAgICAgICAgIGVsZW1lbnQgIkNvbnRhaW5lciIgewogICAgICAgICAgICAgICAgYmFja2dyb3VuZCAjNDM4ZGQ1CiAgICAgICAgICAgICAgICBjb2xvciAjZmZmZmZmCiAgICAgICAgICAgIH0KICAgICAgICAKICAgICAgICAgICAgZWxlbWVudCAiQVBJIiB7CiAgICAgICAgICAgICAgICBzaGFwZSBoZXhhZ29uCiAgICAgICAgICAgICAgICBiYWNrZ3JvdW5kICM1QjlCRDUKICAgICAgICAgICAgfQogICAgICAgIAogICAgICAgICAgICBlbGVtZW50ICJEYXRhYmFzZSIgewogICAgICAgICAgICAgICAgc2hhcGUgY3lsaW5kZXIKICAgICAgICAgICAgICAgIGJhY2tncm91bmQgIzQzOGRkNQogICAgICAgICAgICB9CiAgICAgICAgCiAgICAgICAgICAgIHJlbGF0aW9uc2hpcCAiUmVsYXRpb25zaGlwIiB7CiAgICAgICAgICAgICAgICByb3V0aW5nIGRpcmVjdAogICAgICAgICAgICB9CiAgICAgICAgCiAgICAgICAgICAgIHJlbGF0aW9uc2hpcCAiQXN5bmNocm9ub3VzIiB7CiAgICAgICAgICAgICAgICBkYXNoZWQgdHJ1ZQogICAgICAgICAgICB9CiAgICAgICAgfQoKICAgICAgICB0aGVtZSBkZWZhdWx0CiAgICB9Cn0="
   },
   "views" : {
-    "configuration" : {
-      "branding" : { },
-      "lastSavedView" : "Diagram2",
-      "metadataSymbols" : "SquareBrackets",
-      "styles" : {
-        "elements" : [ {
-          "color" : "#ffffff",
-          "tag" : "Element"
-        }, {
-          "background" : "#d34407",
-          "shape" : "Person",
-          "tag" : "Person"
-        }, {
-          "background" : "#f86628",
-          "tag" : "Software System"
-        }, {
-          "background" : "#f88728",
-          "tag" : "Container"
-        }, {
-          "shape" : "Cylinder",
-          "tag" : "Database"
-        } ]
-      },
-      "terminology" : { }
-    },
-    "containerViews" : [ {
+    "componentViews" : [ {
       "automaticLayout" : {
         "applied" : false,
         "edgeSeparation" : 0,
@@ -105,32 +442,305 @@
         "rankSeparation" : 300,
         "vertices" : false
       },
+      "containerId" : "12",
+      "description" : "Shows the components within the Admin Web API container and their interactions.",
       "dimensions" : {
-        "height" : 841,
-        "width" : 2470
+        "height" : 2540,
+        "width" : 3400
+      },
+      "elements" : [ {
+        "id" : "4",
+        "x" : 1849,
+        "y" : 151
+      }, {
+        "id" : "9",
+        "x" : 199,
+        "y" : 1071
+      }, {
+        "id" : "13",
+        "x" : 1099,
+        "y" : 1371
+      }, {
+        "id" : "14",
+        "x" : 1099,
+        "y" : 771
+      }, {
+        "id" : "15",
+        "x" : 1849,
+        "y" : 1081
+      }, {
+        "id" : "17",
+        "x" : 1849,
+        "y" : 1991
+      }, {
+        "id" : "18",
+        "x" : 2749,
+        "y" : 1081
+      } ],
+      "externalContainerBoundariesVisible" : false,
+      "key" : "AdminWebAPI-Component",
+      "order" : 5,
+      "relationships" : [ {
+        "id" : "44"
+      }, {
+        "id" : "45"
+      }, {
+        "id" : "46"
+      }, {
+        "id" : "47"
+      }, {
+        "id" : "48"
+      }, {
+        "id" : "49"
+      } ],
+      "title" : "Admin Web API - Component Diagram (Level 3)"
+    } ],
+    "configuration" : {
+      "branding" : { },
+      "lastSavedView" : "AdminWebAPI-Component",
+      "metadataSymbols" : "SquareBrackets",
+      "styles" : {
+        "elements" : [ {
+          "background" : "#08427b",
+          "color" : "#ffffff",
+          "shape" : "Person",
+          "tag" : "Person"
+        }, {
+          "background" : "#1168bd",
+          "color" : "#ffffff",
+          "tag" : "Software System"
+        }, {
+          "background" : "#438dd5",
+          "color" : "#ffffff",
+          "tag" : "Container"
+        }, {
+          "background" : "#5b9bd5",
+          "shape" : "Hexagon",
+          "tag" : "API"
+        }, {
+          "background" : "#438dd5",
+          "shape" : "Cylinder",
+          "tag" : "Database"
+        } ],
+        "relationships" : [ {
+          "routing" : "Direct",
+          "tag" : "Relationship"
+        }, {
+          "dashed" : true,
+          "tag" : "Asynchronous"
+        } ]
+      },
+      "terminology" : { },
+      "themes" : [ "https://static.structurizr.com/themes/default/theme.json" ]
+    },
+    "containerViews" : [ {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "TopBottom",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "Shows the containers within the Bookstore System and their technologies.",
+      "dimensions" : {
+        "height" : 4130,
+        "width" : 4640
       },
       "elements" : [ {
         "id" : "1",
-        "x" : 199,
-        "y" : 165
+        "x" : 1759,
+        "y" : 152
+      }, {
+        "id" : "2",
+        "x" : 2519,
+        "y" : 152
       }, {
         "id" : "3",
-        "x" : 1049,
-        "y" : 215
+        "x" : 3244,
+        "y" : 152
       }, {
         "id" : "4",
-        "x" : 1799,
+        "x" : 949,
+        "y" : 2291
+      }, {
+        "id" : "5",
+        "x" : 3969,
+        "y" : 202
+      }, {
+        "id" : "6",
+        "x" : 199,
+        "y" : 2291
+      }, {
+        "id" : "8",
+        "x" : 2084,
+        "y" : 1002
+      }, {
+        "id" : "9",
+        "x" : 3219,
+        "y" : 1002
+      }, {
+        "id" : "10",
+        "x" : 2469,
+        "y" : 1602
+      }, {
+        "id" : "11",
+        "x" : 1719,
+        "y" : 1602
+      }, {
+        "id" : "12",
+        "x" : 3584,
+        "y" : 1602
+      }, {
+        "id" : "16",
+        "x" : 3584,
+        "y" : 3491
+      }, {
+        "id" : "17",
+        "x" : 2084,
+        "y" : 2291
+      }, {
+        "id" : "18",
+        "x" : 3969,
+        "y" : 2291
+      }, {
+        "id" : "19",
+        "x" : 3969,
+        "y" : 2891
+      }, {
+        "id" : "20",
+        "x" : 3969,
+        "y" : 1002
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "BookstoreSystem-Container",
+      "order" : 2,
+      "relationships" : [ {
+        "id" : "27"
+      }, {
+        "id" : "28"
+      }, {
+        "id" : "29"
+      }, {
+        "id" : "30"
+      }, {
+        "id" : "31"
+      }, {
+        "id" : "32"
+      }, {
+        "id" : "33"
+      }, {
+        "id" : "34"
+      }, {
+        "id" : "35"
+      }, {
+        "id" : "36"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "38"
+      }, {
+        "id" : "39"
+      }, {
+        "id" : "40"
+      }, {
+        "id" : "41"
+      }, {
+        "id" : "42"
+      }, {
+        "id" : "43"
+      } ],
+      "softwareSystemId" : "7",
+      "title" : "Bookstore System - Container Diagram (Level 2)"
+    }, {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "Focuses on the API layer and database interactions.",
+      "elements" : [ {
+        "id" : "10",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "11",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "12",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "16",
+        "x" : 0,
+        "y" : 0
+      }, {
+        "id" : "17",
+        "x" : 0,
+        "y" : 0
+      } ],
+      "externalSoftwareSystemBoundariesVisible" : false,
+      "key" : "BookstoreSystem-APIs",
+      "order" : 3,
+      "relationships" : [ {
+        "id" : "36"
+      }, {
+        "id" : "37"
+      }, {
+        "id" : "38"
+      } ],
+      "softwareSystemId" : "7",
+      "title" : "Bookstore System - API Layer"
+    }, {
+      "automaticLayout" : {
+        "applied" : false,
+        "edgeSeparation" : 0,
+        "implementation" : "Graphviz",
+        "nodeSeparation" : 300,
+        "rankDirection" : "LeftRight",
+        "rankSeparation" : 300,
+        "vertices" : false
+      },
+      "description" : "Shows the event-driven architecture for book data synchronization.",
+      "dimensions" : {
+        "height" : 900,
+        "width" : 3140
+      },
+      "elements" : [ {
+        "id" : "12",
+        "x" : 219,
+        "y" : 171
+      }, {
+        "id" : "16",
+        "x" : 2469,
+        "y" : 215
+      }, {
+        "id" : "18",
+        "x" : 969,
+        "y" : 215
+      }, {
+        "id" : "19",
+        "x" : 1719,
         "y" : 215
       } ],
       "externalSoftwareSystemBoundariesVisible" : false,
-      "key" : "Diagram2",
-      "order" : 2,
+      "key" : "BookstoreSystem-EventFlow",
+      "order" : 4,
       "relationships" : [ {
-        "id" : "5"
+        "id" : "39"
       }, {
-        "id" : "7"
+        "id" : "42"
+      }, {
+        "id" : "43"
       } ],
-      "softwareSystemId" : "2"
+      "softwareSystemId" : "7",
+      "title" : "Bookstore System - Event Processing Flow"
     } ],
     "systemContextViews" : [ {
       "automaticLayout" : {
@@ -142,26 +752,58 @@
         "rankSeparation" : 300,
         "vertices" : false
       },
+      "description" : "Shows how the Bookstore System fits into the wider environment with users and external systems.",
       "dimensions" : {
-        "height" : 800,
-        "width" : 1550
+        "height" : 2300,
+        "width" : 2300
       },
       "elements" : [ {
         "id" : "1",
-        "x" : 199,
-        "y" : 165
+        "x" : 200,
+        "y" : 252
       }, {
         "id" : "2",
-        "x" : 899,
-        "y" : 215
+        "x" : 200,
+        "y" : 952
+      }, {
+        "id" : "3",
+        "x" : 200,
+        "y" : 1652
+      }, {
+        "id" : "4",
+        "x" : 1650,
+        "y" : 152
+      }, {
+        "id" : "5",
+        "x" : 1650,
+        "y" : 752
+      }, {
+        "id" : "6",
+        "x" : 1650,
+        "y" : 1352
+      }, {
+        "id" : "7",
+        "x" : 900,
+        "y" : 1002
       } ],
       "enterpriseBoundaryVisible" : true,
-      "key" : "Diagram1",
+      "key" : "BookstoreSystem-Context",
       "order" : 1,
       "relationships" : [ {
-        "id" : "6"
+        "id" : "21"
+      }, {
+        "id" : "22"
+      }, {
+        "id" : "23"
+      }, {
+        "id" : "24"
+      }, {
+        "id" : "25"
+      }, {
+        "id" : "26"
       } ],
-      "softwareSystemId" : "2"
+      "softwareSystemId" : "7",
+      "title" : "Bookstore System - Context Diagram (Level 1)"
     } ]
   }
 }

@@ -1,53 +1,22 @@
-workspace "Name" "Description" {
+workspace "Bookstore C4 Model" "C4 diagrams for the Bookstore system." {
 
-    !identifiers hierarchical
+    !identifiers flat
+    !impliedRelationships false
 
     model {
-        u = person "User"
-        ss = softwareSystem "Software System" {
-            wa = container "Web Application"
-            db = container "Database Schema" {
-                tags "Database"
-            }
-        }
-
-        u -> ss.wa "Uses"
-        ss.wa -> ss.db "Reads from and writes to"
+        !include model/people.dsl
+        !include model/external-systems.dsl
+        !include model/bookstore-system.dsl
+        !include model/relationships.dsl
     }
 
     views {
-        systemContext ss "Diagram1" {
-            include *
-            autolayout lr
-        }
+        !include views/context-views.dsl
+        !include views/container-views.dsl
+        !include views/component-views.dsl
+        
+        !include configuration/styles.dsl
 
-        container ss "Diagram2" {
-            include *
-            autolayout lr
-        }
-
-        styles {
-            element "Element" {
-                color #ffffff
-            }
-            element "Person" {
-                background #d34407
-                shape person
-            }
-            element "Software System" {
-                background #f86628
-            }
-            element "Container" {
-                background #f88728
-            }
-            element "Database" {
-                shape cylinder
-            }
-        }
+        theme default
     }
-
-    configuration {
-        scope softwaresystem
-    }
-
 }
